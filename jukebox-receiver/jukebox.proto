@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package jukebox;
+
+import "google/protobuf/timestamp.proto";
+
+option java_package = "com.bookoo.jukebox";
+option java_outer_classname = "JukeboxProtos";
+
+message Message {
+  MessageType messageType = 1;
+  SongPreamble songPreamble = 2;
+  SongChunk songChunk = 3;
+
+  enum MessageType {
+    SONG_PREAMBLE = 0;
+    SONG_CHUNK = 1;
+    AUDIO_STREAM_CONSUMED = 3;
+    AUDIO_STREAM_RESET = 4;
+  }
+}
+
+message SongPreamble {
+  bool bigEndian = 1;
+  int32 channels = 2;
+  Encoding encoding = 3;
+  float frameRate = 4;
+  int32 frameSize = 5;
+  float sampleRate = 6;
+  int32 sampleSizeInBits = 7;
+
+  enum Encoding {
+    PCM_SIGNED = 0;
+    PCM_UNSIGNED = 1;
+    PCM_FLOAT = 2;
+    ULAW = 3;
+    ALAW = 4;
+    MPEG1L1 = 5;
+    MPEG1L2 = 6;
+    MPEG1L3 = 7;
+    MPEG2DOT5L1 = 8;
+    MPEG2DOT5L2 = 9;
+    MPEG2DOT5L3 = 10;
+    MPEG2L1 = 11;
+    MPEG2L2 = 12;
+    MPEG2L3 = 13;
+  }
+}
+
+message SongChunk {
+  bytes chunk = 1;
+  google.protobuf.Timestamp startTime = 2;
+}
