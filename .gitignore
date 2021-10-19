@@ -1,5 +1,4 @@
 .vs/
-.vscode/
 CMakeSettings.json
 out/
 bazel-bin/
