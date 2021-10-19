@@ -1,0 +1,377 @@
+syntax="proto3";
+
+import "tagger/tagger.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/bookoo-billy/jukebox/api/v1";
+
+package jukebox;
+
+service AlbumService {
+    rpc List(AlbumQuery) returns (AlbumList) {
+		option (google.api.http) = {
+			get: "/api/v1/albums"
+        };
+    }
+    rpc Create(AlbumCreateRequest) returns (Album)  {
+		option (google.api.http) = {
+			post: "/api/v1/albums"
+            body: "album"
+        };
+    }
+
+    rpc Get(AlbumQuery) returns (Album)  {
+		option (google.api.http) = {
+			get: "/api/v1/albums/{id}"
+        };
+    }
+
+    rpc Update(AlbumUpdateRequest) returns (Album)  {
+		option (google.api.http) = {
+			put: "/api/v1/albums/{album.id}"
+            body: "album"
+        };
+    }
+
+    rpc Delete (AlbumQuery) returns (Album)  {
+		option (google.api.http) = {
+			delete: "/api/v1/albums/{id}"
+        };
+    }
+}
+
+service ArtistService {
+    rpc List(ArtistQuery) returns (ArtistList) {
+		option (google.api.http) = {
+			get: "/api/v1/artists"
+        };
+    }
+
+    rpc Create(ArtistCreateRequest) returns (Artist)  {
+		option (google.api.http) = {
+			post: "/api/v1/artists"
+            body: "artist"
+        };
+    }
+
+    rpc Get(ArtistQuery) returns (Artist)  {
+		option (google.api.http) = {
+			get: "/api/v1/artists/{id}"
+        };
+    }
+
+    rpc Update(ArtistUpdateRequest) returns (Artist)  {
+		option (google.api.http) = {
+			put: "/api/v1/artists/{artist.id}"
+            body: "artist"
+        };
+    }
+
+    rpc Delete (ArtistQuery) returns (Artist)  {
+		option (google.api.http) = {
+			delete: "/api/v1/artists/{id}"
+        };
+    }
+}
+
+service PlaylistService {
+    rpc List(PlaylistQuery) returns (PlaylistList) {
+		option (google.api.http) = {
+			get: "/api/v1/playlists"
+        };
+    }
+
+    rpc Create(PlaylistCreateRequest) returns (Playlist) {
+		option (google.api.http) = {
+			post: "/api/v1/playlists"
+            body: "playlist"
+        };
+    }
+
+    rpc Get(PlaylistQuery) returns (Playlist) {
+		option (google.api.http) = {
+			get: "/api/v1/playlists/{id}"
+        };
+    }
+
+    rpc Update(PlaylistUpdateRequest) returns (Playlist) {
+		option (google.api.http) = {
+			put: "/api/v1/playlists/{playlist.id}"
+            body: "playlist"
+        };
+    }
+
+    rpc Delete(PlaylistQuery) returns (Playlist)  {
+		option (google.api.http) = {
+			delete: "/api/v1/playlists/{id}"
+        };
+    }
+}
+
+service SongService {
+    rpc List(SongQuery) returns (SongList)  {
+		option (google.api.http) = {
+			get: "/api/v1/songs"
+        };
+    }
+
+    rpc Create(SongCreateRequest) returns (Song)  {
+		option (google.api.http) = {
+			post: "/api/v1/songs"
+            body: "song"
+        };
+    }
+
+    rpc Get(SongQuery) returns (Song)  {
+		option (google.api.http) = {
+			get: "/api/v1/songs/{id}"
+        };
+    }
+
+    rpc Update(SongUpdateRequest) returns (Song)  {
+		option (google.api.http) = {
+			put: "/api/v1/songs/{song.id}"
+            body: "song"
+        };
+    }
+
+    rpc Delete(SongQuery) returns (Song)  {
+		option (google.api.http) = {
+		    delete: "/api/v1/songs/{id}"
+        };
+    }
+}
+
+
+service ReceiverService {
+    rpc List(ReceiverQuery) returns (ReceiverList)  {
+		option (google.api.http) = {
+			get: "/api/v1/receivers"
+        };
+    }
+
+    rpc Create(ReceiverCreateRequest) returns (Receiver)  {
+		option (google.api.http) = {
+			post: "/api/v1/receivers"
+            body: "receiver"
+        };
+    }
+
+    rpc Get(ReceiverQuery) returns (Receiver)  {
+		option (google.api.http) = {
+			get: "/api/v1/receivers/{id}"
+        };
+    }
+
+    rpc Update(ReceiverUpdateRequest) returns (Receiver)  {
+		option (google.api.http) = {
+			put: "/api/v1/receivers/{receiver.id}"
+            body: "receiver"
+        };
+    }
+
+    rpc Delete(ReceiverQuery) returns (Receiver)  {
+		option (google.api.http) = {
+		    delete: "/api/v1/receivers/{id}"
+        };
+    }
+
+    rpc Play(ReceiversPlayRequest) returns (ReceiversPlayResponse)  {
+		option (google.api.http) = {
+			post: "/api/v1/receivers/play"
+            body: "song"
+        };
+    }
+
+    rpc Stop(ReceiversStopRequest) returns (ReceiversStopResponse)  {
+		option (google.api.http) = {
+			post: "/api/v1/receivers/stop"
+        };
+    }
+
+    rpc ReceiverChat(stream ReceiverCommandResponse) returns (stream ReceiverCommandRequest);
+}
+
+message Album {
+    string id = 1;
+    string name = 2;
+    Artist artist = 3;
+    repeated Song tracks = 4;
+}
+
+message AlbumCreateRequest {
+    Album album = 1;
+}
+
+message AlbumUpdateRequest {
+    Album album = 1;
+}
+
+message AlbumQuery {
+    string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
+    string name = 2 [(tagger.tags) = "bson:\"name,omitempty\""];
+    string artistId = 3 [(tagger.tags) = "bson:\"artistid,omitempty\""];
+    string artistName = 4 [(tagger.tags) = "bson:\"artistname,omitempty\""];
+    string songId = 5 [(tagger.tags) = "bson:\"songid,omitempty\""];
+    string songName = 6 [(tagger.tags) = "bson:\"songname,omitempty\""];
+}
+
+message AlbumList {
+    repeated Album items = 1;
+}
+
+message Artist {
+    string id = 1;
+    string name = 2;
+    repeated Album albums = 3;
+    repeated Song songs = 4;
+}
+
+message ArtistCreateRequest {
+    Artist artist = 1;
+}
+
+message ArtistUpdateRequest {
+    Artist artist = 1;
+}
+
+message ArtistList {
+    repeated Artist items = 1;
+}
+
+message ArtistQuery {
+    string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
+    string name = 2 [(tagger.tags) = "bson:\"name,omitempty\""];
+    string albumId = 3 [(tagger.tags) = "bson:\"albumid,omitempty\""];
+    string artistId = 4 [(tagger.tags) = "bson:\"artistid,omitempty\""];
+    string songId = 5 [(tagger.tags) = "bson:\"songid,omitempty\""];
+    string songName = 6 [(tagger.tags) = "bson:\"songname,omitempty\""];
+}
+
+message PlaylistQuery {
+    string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
+    string name = 2 [(tagger.tags) = "bson:\"name,omitempty\""];
+}
+
+message PlaylistCreateRequest {
+    Playlist playlist = 100;
+}
+
+message PlaylistList {
+    repeated Playlist items = 1;
+}
+
+message PlaylistUpdateRequest {
+    Playlist playlist = 100;
+}
+
+message Playlist {
+    string id = 1;
+    string name = 2;
+
+    repeated Song songs = 100;
+}
+
+message PlaySongChunk {
+    bytes chunk = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+message PlaySongChunkResponse {}
+
+message PlaySongHeader {
+    Song song = 1;
+}
+
+message PlaySongHeaderResponse {}
+message PlaySongTrailer {}
+message PlaySongTrailerResponse {}
+
+message Receiver {
+    string id = 1;
+    string name = 2;
+    string url = 3;
+}
+
+message ReceiverCommandRequest {
+    oneof command {
+        PlaySongHeader playSongHeader = 1;
+        PlaySongChunk playSongChunk = 2;
+        PlaySongTrailer playSongTrailer = 3;
+    }
+}
+
+message ReceiverCommandResponse {
+    oneof response {
+        PlaySongHeaderResponse playSongHeaderResponse = 1;
+        PlaySongChunkResponse playSongChunkResponse = 2;
+        PlaySongTrailerResponse playSongTrailerResponse = 3;
+    }
+}
+
+message ReceiverCreateRequest {
+    Receiver receiver = 1;
+}
+
+message ReceiverList {
+    repeated Receiver items = 1;
+}
+
+message ReceiverQuery {
+    string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
+    string name = 2 [(tagger.tags) = "bson:\"name,omitempty\""];
+    string url = 3 [(tagger.tags) = "bson:\"url,omitempty\""];
+}
+
+message ReceiverUpdateRequest {
+    Receiver receiver = 1;
+}
+
+message ReceiversPlayRequest {
+    Song song = 100;
+}
+
+message ReceiversPlayResponse {
+    Song song = 100;
+    ReceiverList receivers = 101;
+}
+
+message ReceiversStopRequest {
+    Song song = 100;
+}
+
+message ReceiversStopResponse {
+    ReceiverList receivers = 100;
+}
+
+message SongList {
+    repeated Song items = 1;
+}
+
+message SongQuery {
+    string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
+    string artistId = 2 [(tagger.tags) = "bson:\"artistid,omitempty\""];
+    string albumId = 3 [(tagger.tags) = "bson:\"albumid,omitempty\""];
+
+    string name = 4 [(tagger.tags) = "bson:\"name,omitempty\""];
+    string artistName = 5 [(tagger.tags) = "bson:\"artistname,omitempty\""];
+    string albumName = 6 [(tagger.tags) = "bson:\"albumname,omitempty\""];
+}
+
+message SongCreateRequest {
+    Song song = 100;
+}
+
+message SongUpdateRequest {
+    Song song = 100;
+}
+
+message Song {
+    string id = 1;
+    string name = 2;
+    int32 trackNumber = 3;
+    int32 trackLength = 4;
+    Album album = 5;
+    Artist artist = 6;
+}
