@@ -5,5 +5,8 @@ cc_library(
     srcs = ["jukebox-grpc.cc"],
     hdrs = ["jukebox-grpc.h"],
     visibility = ["//main:__pkg__"],
-    deps = ["//proto:jukebox_cpp_grpc"]
+    deps = [
+        "//proto:jukebox_cpp_grpc",
+        "@com_github_grpc_grpc//:grpc++",
+    ]
 )

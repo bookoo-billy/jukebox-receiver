@@ -9,6 +9,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/bazel-out/x64_windows-dbg/bin/main/jukebox_receiver.exe.runfiles/",
             "environment": [],
+            "internalConsoleOptions": "openOnSessionStart",
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "/path/to/gdb",
