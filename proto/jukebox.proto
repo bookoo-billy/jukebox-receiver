@@ -249,6 +249,13 @@ message ArtistQuery {
     string songName = 6 [(tagger.tags) = "bson:\"songname,omitempty\""];
 }
 
+message AudioFormat {
+    uint32 frequency = 1;
+    uint32 format = 2;
+    uint32 channels = 3;
+    uint32 samples = 4;
+}
+
 message PlaylistQuery {
     string id = 1 [(tagger.tags) = "bson:\"id,omitempty\""];
     string name = 2 [(tagger.tags) = "bson:\"name,omitempty\""];
@@ -275,13 +282,15 @@ message Playlist {
 
 message PlaySongChunk {
     bytes chunk = 1;
-    google.protobuf.Timestamp timestamp = 2;
+    int32 length = 2;
+    google.protobuf.Timestamp timestamp = 3;
 }
 
 message PlaySongChunkResponse {}
 
 message PlaySongHeader {
     Song song = 1;
+    AudioFormat format = 2;
 }
 
 message PlaySongHeaderResponse {}
