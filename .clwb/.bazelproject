@@ -4,10 +4,14 @@ directories:
   .
 
 # Automatically includes all relevant targets under the 'directories' above
-derive_targets_from_directories: true
+derive_targets_from_directories: false
 
 targets:
   # If source code isn't resolving, add additional targets that compile it here
+  //main:main
+  //proto:jukebox_cpp_grpc
+  //receiver:receiver
+  //sound:sound
 
 additional_languages:
   # Uncomment any additional languages you want supported

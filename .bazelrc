@@ -1,0 +1,3 @@
+
+build --verbose_failures --enable_runfiles
+startup --windows_enable_symlinks

@@ -1,5 +1,5 @@
-#include "receiver.h"
-#include "proto/jukebox.grpc.pb.h"
+#include "receiver/receiver.h"
+#include "sound/sound.h"
 #include <ctime>
 #include <iostream>
 #include <grpc/grpc.h>
@@ -67,6 +67,7 @@ namespace receiver {
             jukebox::ReceiverService::NewStub(channel)) {}
 
     void JukeboxClient::ReceiverChat() {
+        sound::Player player;
         grpc::ClientContext context;
         std::shared_ptr <grpc::ClientReaderWriter<jukebox::ReceiverCommandResponse, jukebox::ReceiverCommandRequest>> stream(
                 stub_->ReceiverChat(&context)
@@ -99,7 +100,7 @@ namespace receiver {
 
                 switch (receiverCommand.command_case()) {
                     case jukebox::ReceiverCommandRequest::CommandCase::kPlaySongChunk:
-                        //TODO Play Song Chunk
+                        player.queue(receiverCommand.playsongchunk());
                         break;
                     case jukebox::ReceiverCommandRequest::CommandCase::kPlaySongTrailer:
                         //Play Song Trailer

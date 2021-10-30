@@ -7,7 +7,7 @@
 namespace receiver {
     class JukeboxClient {
     public:
-        JukeboxClient(std::shared_ptr <grpc::Channel> channel);
+        JukeboxClient(std::shared_ptr <grpc::Channel>);
         void ReceiverChat();
 
     private:

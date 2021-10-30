@@ -81,3 +81,21 @@ new_git_repository(
     build_file_content = TAGGER_BUILD_CONTENT,
     workspace_file_content = TAGGER_WORKSPACE_CONTENT,
 )
+
+SDL2_BUILD_CONTENT="""
+cc_library(
+    name = "sdl2",
+    hdrs = glob(["include/*.h"]),
+    includes = ["include"],
+    linkopts = ["/LIBPATH C:/SDL2/lib/x64/SDL2.lib"],
+    visibility = ["//visibility:public"],
+)
+"""
+
+http_archive(
+    name = "sdl2",
+    build_file_content = SDL2_BUILD_CONTENT,
+    sha256 = "e6a7c71154c3001e318ba7ed4b98582de72ff970aca05abc9f45f7cbdc9088cb",
+    strip_prefix = "SDL2-2.0.8",
+    urls = ["https://www.libsdl.org/release/SDL2-2.0.8.zip"],
+)

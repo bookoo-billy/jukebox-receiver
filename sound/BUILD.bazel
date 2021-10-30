@@ -1,0 +1,14 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "sound",
+    srcs = ["sound.cc"],
+    hdrs = [
+        "sound.h"
+    ],
+    visibility = ["//receiver:__pkg__"],
+    deps = [
+        "//proto:jukebox_cpp_grpc",
+        "@sdl2"
+    ],
+)

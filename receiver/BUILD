@@ -7,6 +7,7 @@ cc_library(
     visibility = ["//main:__pkg__"],
     deps = [
         "//proto:jukebox_cpp_grpc",
+        "//sound:sound",
         "@com_github_grpc_grpc//:grpc++",
-    ]
+    ],
 )
