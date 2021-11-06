@@ -1,7 +1,3 @@
-//
-// Created by Will on 10/30/2021.
-//
-
 #ifndef JUKEBOX_RECEIVER_SOUND_H
 #define JUKEBOX_RECEIVER_SOUND_H
 
