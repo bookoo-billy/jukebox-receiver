@@ -87,7 +87,6 @@ cc_library(
     name = "sdl2",
     hdrs = glob(["include/*.h"]),
     includes = ["include"],
-    linkopts = ["/LIBPATH C:/SDL2/lib/x64/SDL2.lib"],
     visibility = ["//visibility:public"],
 )
 """

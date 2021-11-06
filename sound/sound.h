@@ -7,15 +7,22 @@
 
 #include "proto/jukebox.grpc.pb.h"
 #include "SDL.h"
+#include <queue>
+
 namespace sound {
     class Player {
     public:
         Player();
 
         void queue(jukebox::PlaySongChunk);
+        void Player::playCallback(void* userdata, Uint8* stream, int len);
 
     private:
         SDL_AudioDeviceID sdlAudioDeviceId;
+        std::queue<jukebox::PlaySongChunk> chunkQueue;
+
+        SDL_AudioDeviceID Player::initSdlAudioDeviceId();
+        SDL_AudioSpec Player::initSdlAudioSpec();
     };
 }
 

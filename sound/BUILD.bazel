@@ -6,9 +6,10 @@ cc_library(
     hdrs = [
         "sound.h"
     ],
+    linkopts = ["/LIBPATH C:/SDL2/lib/x64/SDL2.lib"],
     visibility = ["//receiver:__pkg__"],
     deps = [
         "//proto:jukebox_cpp_grpc",
-        "@sdl2"
+        "@sdl2",
     ],
 )
