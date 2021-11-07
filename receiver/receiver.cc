@@ -26,7 +26,7 @@ jukebox::PlaySongTrailerResponse MakePlaySongTrailerResponse() {
 jukebox::PlaySongHeaderResponse handlePlaySongHeader(jukebox::ReceiverCommandRequest cmd) {
     switch (cmd.command_case()) {
         case jukebox::ReceiverCommandRequest::CommandCase::kPlaySongHeader:
-            std::cout << "Playing song " << cmd.playsongheader().song().SerializeAsString() << " ..."
+            std::cout << "Playing song " << cmd.playsongheader().song().name() << " ..."
                       << std::endl;
             return MakePlaySongHeaderResponse();
         case jukebox::ReceiverCommandRequest::CommandCase::kPlaySongChunk:

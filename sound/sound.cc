@@ -23,22 +23,29 @@ namespace sound {
     void Player::playCallback(void* userdata, Uint8* stream, int len) {
         google::protobuf::Timestamp sysTime = google::protobuf::util::TimeUtil::GetCurrentTime();
 
-        if (chunkQueue.empty()) return;
+        while (!chunkQueue.empty()) {
+            jukebox::PlaySongChunk chunk = chunkQueue.front();
+            chunkQueue.pop();
 
-        jukebox::PlaySongChunk chunk = chunkQueue.front();
-        chunkQueue.pop();
+            google::protobuf::Timestamp playTime = chunk.timestamp();
 
-        google::protobuf::Timestamp playTime = chunk.timestamp();
+            int playTimeSecs = playTime.seconds();
+            int sysTimeSecs = sysTime.seconds();
 
-        int playTimeSecs = playTime.seconds();
-        int sysTimeSecs = sysTime.seconds();
-
-        if (sysTimeSecs - 1 <= playTimeSecs && playTimeSecs <= sysTimeSecs + 1) {
-            Uint8 *buffer = (uint8_t *) chunk.chunk().c_str();
-            Uint32 size = chunk.size();
-            SDL_memcpy(stream, buffer, size);
+            if (sysTimeSecs - 1 <= playTimeSecs && playTimeSecs <= sysTimeSecs + 1) {
+                Uint8 *buffer = (uint8_t *) chunk.chunk().c_str();
+                SDL_memcpy(stream, buffer, chunk.size());
+                return;
+            } else if (sysTimeSecs - 1 <= playTimeSecs) {
+                SDL_memset(stream, 0, chunk.size());
+                return;
+            }
+            chunk.Clear();
         }
-        chunk.Clear();
+
+        //There are no chunks available for playing, so play silence
+        SDL_memset(stream, 0, 4608);
+        return;
     }
 
     //Call this when the PlaySongChunkHeader is received

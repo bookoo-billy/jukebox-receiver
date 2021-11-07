@@ -8,7 +8,7 @@
             "name": "(Windows) Launch",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bazel-out/x64_windows-dbg/bin/main/main.exe",
+            "program": "${workspaceFolder}/bazel-bin/main/main.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
