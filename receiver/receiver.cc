@@ -66,8 +66,16 @@ namespace receiver {
     JukeboxClient::JukeboxClient(std::shared_ptr <grpc::Channel> channel) : stub_(
             jukebox::ReceiverService::NewStub(channel)) {}
 
+    SDL_AudioFormat toSdlAudioFormat(jukebox::Format format) {
+        switch (format) {
+            case jukebox::Format::JUKEBOX_S16:
+                return AUDIO_S16;
+            default:
+                return AUDIO_S16;
+        }
+    }
+
     void JukeboxClient::ReceiverChat() {
-        sound::Player player;
         grpc::ClientContext context;
         std::shared_ptr <grpc::ClientReaderWriter<jukebox::ReceiverCommandResponse, jukebox::ReceiverCommandRequest>> stream(
                 stub_->ReceiverChat(&context)
@@ -88,6 +96,13 @@ namespace receiver {
             if (!stream->Write(receiverResponse)) {
                 std::cout << "Failed to send play song header response, bailing..." << std::endl;
             }
+
+            sound::Player player(
+                toSdlAudioFormat(receiverCommand.playsongheader().format()),
+                receiverCommand.playsongheader().samplerate(),
+                receiverCommand.playsongheader().channels(),
+                receiverCommand.playsongheader().samples()
+            );
 
             std::cout << "Receiving song chunks..." << std::endl;
 

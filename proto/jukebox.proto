@@ -283,6 +283,15 @@ message PlaySongChunkResponse {}
 
 message PlaySongHeader {
     Song song = 1;
+    Format format = 2;
+    int32 sampleRate = 3;
+    uint32 channels = 4;
+    uint32 samples = 5;
+}
+
+enum Format {
+  FORMAT_UNSET = 0;
+  JUKEBOX_S16 = 1;
 }
 
 message PlaySongHeaderResponse {}

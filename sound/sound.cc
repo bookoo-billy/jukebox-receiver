@@ -5,7 +5,8 @@
 #include <thread>
 
 namespace sound {
-    Player::Player() : chunkQueue(), sdlAudioDeviceId(initSdlAudioDeviceId()) {}
+    Player::Player(SDL_AudioFormat format, int sampleRate, Uint8 channels, Uint16 samples) :
+        format(format), sampleRate(sampleRate), channels(channels), samples(samples), chunkQueue(), sdlAudioDeviceId(initSdlAudioDeviceId()) {}
 
     //Call this when a PlaySongChunk is received
     void Player::queue(jukebox::PlaySongChunk chunk) {
@@ -21,6 +22,7 @@ namespace sound {
 
     //This function will dequeue a PlaySongChunk and send it to SDL for playback
     void Player::playCallback(void* userdata, Uint8* stream, int len) {
+        //TODO: Get this time in nanos or millis
         google::protobuf::Timestamp sysTime = google::protobuf::util::TimeUtil::GetCurrentTime();
 
         while (!chunkQueue.empty()) {
@@ -35,11 +37,14 @@ namespace sound {
             if (sysTimeSecs - 1 <= playTimeSecs && playTimeSecs <= sysTimeSecs + 1) {
                 Uint8 *buffer = (uint8_t *) chunk.chunk().c_str();
                 SDL_memcpy(stream, buffer, chunk.size());
+                chunk.Clear();
                 return;
             } else if (sysTimeSecs - 1 <= playTimeSecs) {
                 SDL_memset(stream, 0, chunk.size());
+                chunk.Clear();
                 return;
             }
+
             chunk.Clear();
         }
 
@@ -58,10 +63,10 @@ namespace sound {
         SDL_AudioSpec spec;
 
         SDL_zero(spec);
-        spec.freq = 44100;
-        spec.format = AUDIO_S16;
-        spec.channels = 2;
-        spec.samples = 1152;
+        spec.freq = this->sampleRate;
+        spec.format = this->format;
+        spec.channels = this->channels;
+        spec.samples = this->samples;
         spec.callback = staticPlayCallback;
         spec.userdata = this;
         return spec;

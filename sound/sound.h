@@ -8,12 +8,15 @@
 namespace sound {
     class Player {
     public:
-        Player();
-
+        Player(SDL_AudioFormat format, int sampleRate, Uint8 channels, Uint16 samples);
         void queue(jukebox::PlaySongChunk);
         void Player::playCallback(void* userdata, Uint8* stream, int len);
 
     private:
+        SDL_AudioFormat format;
+        int sampleRate;
+        Uint8 channels;
+        Uint16 samples;
         SDL_AudioDeviceID sdlAudioDeviceId;
         std::queue<jukebox::PlaySongChunk> chunkQueue;
 
