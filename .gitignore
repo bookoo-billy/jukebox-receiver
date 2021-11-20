@@ -4,3 +4,4 @@ out/
 bazel-bin/
 bazel-jukebox-receiver/
 bazel-out/
+bazel-testlogs/

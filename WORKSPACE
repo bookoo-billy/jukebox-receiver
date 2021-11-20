@@ -98,3 +98,17 @@ http_archive(
     strip_prefix = "SDL2-2.0.8",
     urls = ["https://www.libsdl.org/release/SDL2-2.0.8.zip"],
 )
+
+LOCAL_LIB_BUILD_CONTENT="""
+cc_library(
+    name = "sdl2",
+    srcs = ["libSDL2.so"],
+    visibility = ["//visibility:public"],
+)
+"""
+
+new_local_repository(
+    name = "system_libs",
+    path = "/usr/lib/x86_64-linux-gnu",
+    build_file_content = LOCAL_LIB_BUILD_CONTENT,
+)
